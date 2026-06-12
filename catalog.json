@@ -1,0 +1,32 @@
+[
+  {
+    "id": "saree-premium-001",
+    "name": "Premium Saree Collection",
+    "category": "Sarees",
+    "description": "Wholesale saree enquiries for boutiques, resellers, and shop owners.",
+    "minimum_quantity": "25 pieces",
+    "price_note": "Quote after fabric, color, and quantity confirmation",
+    "image_url": "",
+    "instagram_url": "https://www.instagram.com/direct/inbox/"
+  },
+  {
+    "id": "kurti-wholesale-001",
+    "name": "Kurti Wholesale Set",
+    "category": "Kurtis",
+    "description": "Kurti catalogue option for store inventory and boutique buying.",
+    "minimum_quantity": "30 pieces",
+    "price_note": "Opening sale: Kurtis at Rs. 1500",
+    "image_url": "",
+    "instagram_url": "https://www.instagram.com/direct/inbox/"
+  },
+  {
+    "id": "crop-top-001",
+    "name": "Crop Top Collection",
+    "category": "Crop tops",
+    "description": "Crop top wholesale enquiries with quantity, color, and size requirements.",
+    "minimum_quantity": "30 pieces",
+    "price_note": "Quote after quantity and size details",
+    "image_url": "",
+    "instagram_url": "https://www.instagram.com/direct/inbox/"
+  }
+]

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EdTech APIs | pickwise.guru</title>
+  <meta name="description" content="EdTech API integration roadmap for PickWise, including Coursera, Udemy, edX, Canvas, Moodle, Google Classroom, xAPI, and LTI.">
+  <link rel="canonical" href="https://pickwise.guru/">
+  <meta property="og:title" content="EdTech APIs | pickwise.guru">
+  <meta property="og:description" content="EdTech API integration roadmap for PickWise, including Coursera, Udemy, edX, Canvas, Moodle, Google Classroom, xAPI, and LTI.">
+  <meta property="og:url" content="https://pickwise.guru/">
+  <meta property="og:type" content="website">
+  <style>
+  :root {
+    color-scheme: light;
+    --ink: #17191f;
+    --muted: #626b76;
+    --line: #dde3e8;
+    --paper: #ffffff;
+    --wash: #f6f8f6;
+    --forest: #255245;
+    --copper: #b35f38;
+    --sun: #d9a441;
+    --berry: #7d4d8b;
+    --sky: #397c9d;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--wash);
+    line-height: 1.5;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px clamp(18px, 5vw, 64px);
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+
+  .mark {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--forest);
+    color: white;
+    font-weight: 900;
+  }
+
+  nav {
+    display: flex;
+    gap: clamp(10px, 2vw, 24px);
+    color: var(--muted);
+    font-size: 0.94rem;
+    white-space: nowrap;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.92fr);
+    gap: clamp(28px, 5vw, 68px);
+    align-items: center;
+    min-height: min(690px, calc(100vh - 64px));
+    padding: clamp(42px, 7vw, 88px) clamp(18px, 5vw, 64px) 38px;
+    background:
+      linear-gradient(115deg, rgba(37, 82, 69, 0.13), rgba(217, 164, 65, 0.12), rgba(57, 124, 157, 0.1)),
+      var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    color: var(--forest);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--sun);
+  }
+
+  h1 {
+    max-width: 790px;
+    margin: 0;
+    font-size: clamp(2.65rem, 7vw, 6.2rem);
+    line-height: 0.94;
+    letter-spacing: 0;
+  }
+
+  .hero p {
+    max-width: 650px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.23rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    background: var(--ink);
+    color: white;
+    font-weight: 800;
+  }
+
+  .button.secondary {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .visual {
+    display: grid;
+    align-items: end;
+    min-height: 430px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(rgba(23, 25, 31, 0.15), rgba(23, 25, 31, 0.45)),
+      url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80") center/cover;
+    box-shadow: 0 22px 60px rgba(23, 25, 31, 0.16);
+  }
+
+  .visual-panel {
+    margin: 18px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .score {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .score strong {
+    display: block;
+    color: var(--ink);
+    font-size: 1.4rem;
+  }
+
+  main { padding: 38px clamp(18px, 5vw, 64px) 68px; }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 22px;
+    margin: 0 0 18px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.5rem);
+    letter-spacing: 0;
+  }
+
+  .section-head p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .two-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .card {
+    min-height: 238px;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+  }
+
+  .compact-card { min-height: 150px; }
+
+  .tag {
+    display: inline-flex;
+    margin-bottom: 28px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .forest { background: var(--forest); }
+  .copper { background: var(--copper); }
+  .berry { background: var(--berry); }
+  .sky { background: var(--sky); }
+
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 1.18rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 34px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--line);
+  }
+
+  .step {
+    padding: 18px;
+    background: var(--paper);
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--forest);
+    font-size: 1.55rem;
+  }
+
+  .step span {
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+
+  .code-band {
+    margin: 34px 0 0;
+    padding: 22px;
+    border-radius: 8px;
+    background: #111820;
+    color: #eaf1f0;
+    overflow-x: auto;
+  }
+
+  .code-band pre { margin: 0; white-space: pre-wrap; }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 24px clamp(18px, 5vw, 64px);
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  @media (max-width: 840px) {
+    .topbar, footer { align-items: flex-start; flex-direction: column; }
+    nav { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+    .hero, .grid, .two-grid, .steps { grid-template-columns: 1fr; }
+    .hero { min-height: auto; }
+    .visual { min-height: 310px; }
+    .section-head { align-items: start; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="mark">P</span>
+      <span>pickwise.guru</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/algorithms">Algorithms</a>
+      <a href="/edtech-apis">EdTech APIs</a>
+      <a href="/mentors">Mentors</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  
+  <section class="hero">
+    <div>
+      <span class="eyebrow">API-ready learning marketplace</span>
+      <h1>EdTech APIs</h1>
+      <p>
+        PickWise can compare courses, LMS data, learning outcomes, and mentorship options
+        by connecting to education platforms with API keys or partner access.
+      </p>
+      <div class="actions">
+        <a class="button" href="#api-stack">View API stack</a>
+        <a class="button secondary" href="/mentors">Connect mentors</a>
+      </div>
+    </div>
+    <div class="visual" role="img" aria-label="Education API dashboard">
+      <div class="visual-panel">
+        <div class="score">
+          <span><strong>8</strong>APIs</span>
+          <span><strong>3</strong>LMS paths</span>
+          <span><strong>1</strong>Ranker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="api-stack" aria-labelledby="api-stack-title">
+      <div class="section-head">
+        <h2 id="api-stack-title">Integration Stack</h2>
+        <p>These cards are wired into the website as the approved integration roadmap. Live calls need credentials, tokens, or partner approval.</p>
+      </div>
+      <div class="grid">
+        
+        <article class="card">
+          <span class="tag sky">Enterprise / partner API</span>
+          <h3>Coursera</h3>
+          <p>Course catalog, learner progress, enterprise learning paths, and xAPI events.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Configured for feed now; API keys needed for Business/Campus data.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://dev.coursera.com/get-started" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Affiliate marketplace API</span>
+          <h3>Udemy</h3>
+          <p>Course search, course listings, topic pages, and affiliate course recommendations.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for client id, client secret, and affiliate tracking.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://www.udemy.com/developers/affiliate/" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Course catalog API</span>
+          <h3>edX</h3>
+          <p>University-style course metadata, subjects, programs, and learning catalog comparison.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for catalog API access and token configuration.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://course-catalog-api-guide.readthedocs.io/en/latest/" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Institution LMS API</span>
+          <h3>Canvas LMS</h3>
+          <p>Courses, assignments, grades, enrollments, and school dashboard integrations.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for OAuth token and institution Canvas URL.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://canvas.instructure.com/doc/api/" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Open-source LMS web services</span>
+          <h3>Moodle</h3>
+          <p>Course, user, enrollment, and completion data from a Moodle installation.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for Moodle web-service token and site URL.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://docs.moodle.org/dev/Web_services" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Workspace for Education API</span>
+          <h3>Google Classroom</h3>
+          <p>Classes, rosters, coursework, submissions, and teacher/student workflows.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for Google OAuth consent and Classroom scopes.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://developers.google.com/workspace/classroom/reference/rest" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">Learning analytics standard</span>
+          <h3>xAPI</h3>
+          <p>Track learning events like started, completed, scored, watched, and practiced.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for an LRS endpoint and credentials.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://adlnet.gov/projects/xapi/" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag sky">LMS tool integration standard</span>
+          <h3>LTI 1.3</h3>
+          <p>Launch PickWise from LMS platforms as an external learning or recommendation tool.</p>
+          <p style="margin-top: 12px;"><strong>Status:</strong> Ready for platform registration and signing keys.</p>
+          <p style="margin-top: 14px;"><a class="button secondary" href="https://www.imsglobal.org/spec/lti/v1p3" target="_blank" rel="noopener">Docs</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section style="margin-top: 38px;" aria-labelledby="workflow-title">
+      <div class="section-head">
+        <h2 id="workflow-title">PickWise API Workflow</h2>
+        <p>Normalize every platform into the same recommendation fields before scoring.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><strong>01</strong><span>Fetch courses, cohorts, or LMS records.</span></div>
+        <div class="step"><strong>02</strong><span>Normalize price, time, level, skill tags, and outcomes.</span></div>
+        <div class="step"><strong>03</strong><span>Score fit against learner goals and constraints.</span></div>
+        <div class="step"><strong>04</strong><span>Recommend course, mentor, or pathway.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <span>pickwise.guru / pickwise.co</span>
+    <span>Public websites: https://pickwise.guru and https://pickwise.co</span>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+Thumbs.db
+niharika-secrets.ps1
+server.out.log
+server.err.log
+nina.out.log
+nina.err.log
+cloudflared-named-niharika.log
+niharika-watchdog.log

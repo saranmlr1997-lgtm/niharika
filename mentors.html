@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connect Directly With Mentor | pickwise.guru</title>
+  <meta name="description" content="Connect directly with curated Topmate mentors who publicly show more than 7 years of experience.">
+  <link rel="canonical" href="https://pickwise.guru/">
+  <meta property="og:title" content="Connect Directly With Mentor | pickwise.guru">
+  <meta property="og:description" content="Connect directly with curated Topmate mentors who publicly show more than 7 years of experience.">
+  <meta property="og:url" content="https://pickwise.guru/">
+  <meta property="og:type" content="website">
+  <style>
+  :root {
+    color-scheme: light;
+    --ink: #17191f;
+    --muted: #626b76;
+    --line: #dde3e8;
+    --paper: #ffffff;
+    --wash: #f6f8f6;
+    --forest: #255245;
+    --copper: #b35f38;
+    --sun: #d9a441;
+    --berry: #7d4d8b;
+    --sky: #397c9d;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--wash);
+    line-height: 1.5;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px clamp(18px, 5vw, 64px);
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+
+  .mark {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--forest);
+    color: white;
+    font-weight: 900;
+  }
+
+  nav {
+    display: flex;
+    gap: clamp(10px, 2vw, 24px);
+    color: var(--muted);
+    font-size: 0.94rem;
+    white-space: nowrap;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.92fr);
+    gap: clamp(28px, 5vw, 68px);
+    align-items: center;
+    min-height: min(690px, calc(100vh - 64px));
+    padding: clamp(42px, 7vw, 88px) clamp(18px, 5vw, 64px) 38px;
+    background:
+      linear-gradient(115deg, rgba(37, 82, 69, 0.13), rgba(217, 164, 65, 0.12), rgba(57, 124, 157, 0.1)),
+      var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    color: var(--forest);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--sun);
+  }
+
+  h1 {
+    max-width: 790px;
+    margin: 0;
+    font-size: clamp(2.65rem, 7vw, 6.2rem);
+    line-height: 0.94;
+    letter-spacing: 0;
+  }
+
+  .hero p {
+    max-width: 650px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.23rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    background: var(--ink);
+    color: white;
+    font-weight: 800;
+  }
+
+  .button.secondary {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .visual {
+    display: grid;
+    align-items: end;
+    min-height: 430px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(rgba(23, 25, 31, 0.15), rgba(23, 25, 31, 0.45)),
+      url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80") center/cover;
+    box-shadow: 0 22px 60px rgba(23, 25, 31, 0.16);
+  }
+
+  .visual-panel {
+    margin: 18px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .score {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .score strong {
+    display: block;
+    color: var(--ink);
+    font-size: 1.4rem;
+  }
+
+  main { padding: 38px clamp(18px, 5vw, 64px) 68px; }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 22px;
+    margin: 0 0 18px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.5rem);
+    letter-spacing: 0;
+  }
+
+  .section-head p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .two-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .card {
+    min-height: 238px;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+  }
+
+  .compact-card { min-height: 150px; }
+
+  .tag {
+    display: inline-flex;
+    margin-bottom: 28px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .forest { background: var(--forest); }
+  .copper { background: var(--copper); }
+  .berry { background: var(--berry); }
+  .sky { background: var(--sky); }
+
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 1.18rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 34px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--line);
+  }
+
+  .step {
+    padding: 18px;
+    background: var(--paper);
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--forest);
+    font-size: 1.55rem;
+  }
+
+  .step span {
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+
+  .code-band {
+    margin: 34px 0 0;
+    padding: 22px;
+    border-radius: 8px;
+    background: #111820;
+    color: #eaf1f0;
+    overflow-x: auto;
+  }
+
+  .code-band pre { margin: 0; white-space: pre-wrap; }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 24px clamp(18px, 5vw, 64px);
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  @media (max-width: 840px) {
+    .topbar, footer { align-items: flex-start; flex-direction: column; }
+    nav { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+    .hero, .grid, .two-grid, .steps { grid-template-columns: 1fr; }
+    .hero { min-height: auto; }
+    .visual { min-height: 310px; }
+    .section-head { align-items: start; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="mark">P</span>
+      <span>pickwise.guru</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/algorithms">Algorithms</a>
+      <a href="/edtech-apis">EdTech APIs</a>
+      <a href="/mentors">Mentors</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Human guidance after course discovery</span>
+      <h1>Connect Directly With Mentor</h1>
+      <p>
+        Curated Topmate mentors with public profiles showing more than 7 years of experience.
+        PickWise can pair course recommendations with mentor sessions for faster decisions.
+      </p>
+      <div class="actions">
+        <a class="button" href="#mentor-list">View mentors</a>
+        <a class="button secondary" href="/edtech-apis">API stack</a>
+      </div>
+    </div>
+    <div class="visual" role="img" aria-label="Mentorship planning dashboard">
+      <div class="visual-panel">
+        <div class="score">
+          <span><strong>7+</strong>Years</span>
+          <span><strong>Topmate</strong>Links</span>
+          <span><strong>Direct</strong>Connect</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="mentor-list" aria-labelledby="mentor-list-title">
+      <div class="section-head">
+        <h2 id="mentor-list-title">Selected Mentors</h2>
+        <p>Topmate has no confirmed official public search API, so this page uses curated public profile links and filters them by visible 7+ years experience signals.</p>
+      </div>
+      <div class="grid">
+        
+        <article class="card">
+          <span class="tag forest">15+ years</span>
+          <h3>Gaurav Khurana</h3>
+          <p>QA, SDET, automation, AI testing, API testing</p>
+          <p style="margin-top: 12px;"><strong>4.9/5 public Topmate rating</strong></p>
+          <p style="margin-top: 12px;">Public Topmate profile states 15+ years in QA and automation.</p>
+          <p style="margin-top: 14px;"><a class="button" href="https://topmate.io/gauravkhurana" target="_blank" rel="noopener">Connect on Topmate</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag forest">10+ years</span>
+          <h3>Pranay Kumar Chaudhary</h3>
+          <p>System design, DSA, senior software engineering</p>
+          <p style="margin-top: 12px;"><strong>4.9/5 public Topmate rating</strong></p>
+          <p style="margin-top: 12px;">Public Topmate profile states 10+ experience.</p>
+          <p style="margin-top: 14px;"><a class="button" href="https://topmate.io/pranay_chaudhary" target="_blank" rel="noopener">Connect on Topmate</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag forest">14+ years</span>
+          <h3>Gaurav Singh</h3>
+          <p>Engineering productivity, automation, AI, interviews</p>
+          <p style="margin-top: 12px;"><strong>5/5 public Topmate rating</strong></p>
+          <p style="margin-top: 12px;">Public Topmate profile states 14+ years of testing industry experience.</p>
+          <p style="margin-top: 14px;"><a class="button" href="https://topmate.io/automationhacks" target="_blank" rel="noopener">Connect on Topmate</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag forest">14+ years</span>
+          <h3>Rapti Gupta</h3>
+          <p>GTM, marketing careers, founder coaching</p>
+          <p style="margin-top: 12px;"><strong>5/5 public Topmate rating</strong></p>
+          <p style="margin-top: 12px;">Public Topmate profile states 14+ years in content marketing, brand, and GTM.</p>
+          <p style="margin-top: 14px;"><a class="button" href="https://topmate.io/rapti" target="_blank" rel="noopener">Connect on Topmate</a></p>
+        </article>
+
+        <article class="card">
+          <span class="tag forest">12+ years</span>
+          <h3>Vikas Sharma</h3>
+          <p>Agile, Scrum, program management, TPM</p>
+          <p style="margin-top: 12px;"><strong>Listed in Topmate engineering mentors</strong></p>
+          <p style="margin-top: 12px;">Topmate engineering mentors page lists 12+ years of program management experience.</p>
+          <p style="margin-top: 14px;"><a class="button" href="https://topmate.io/vikas" target="_blank" rel="noopener">Connect on Topmate</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section style="margin-top: 38px;" aria-labelledby="mentor-workflow-title">
+      <div class="section-head">
+        <h2 id="mentor-workflow-title">Mentor Matching Logic</h2>
+        <p>When live API access is available, PickWise can rank mentors by learner goal, domain, experience, rating, price, and availability.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><strong>01</strong><span>Identify learner goal and target role.</span></div>
+        <div class="step"><strong>02</strong><span>Filter mentors with 7+ years experience.</span></div>
+        <div class="step"><strong>03</strong><span>Score domain fit, public rating, and session type.</span></div>
+        <div class="step"><strong>04</strong><span>Send user to the direct Topmate booking page.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <span>pickwise.guru / pickwise.co</span>
+    <span>Public websites: https://pickwise.guru and https://pickwise.co</span>
+  </footer>
+</body>
+</html>

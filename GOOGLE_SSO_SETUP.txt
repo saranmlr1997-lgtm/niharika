@@ -1,0 +1,48 @@
+GOOGLE SSO SETUP FOR NIHARIKA CUSTOMERS
+
+Customer login page:
+http://127.0.0.1:8080/customer-login
+
+Public after DNS:
+https://www.niharika.com/customer-login
+
+
+WHAT YOU NEED FROM GOOGLE
+
+Create a Google OAuth 2.0 Client ID for a Web application.
+
+In Google Cloud Console:
+1. Go to APIs & Services
+2. Open Credentials
+3. Create Credentials -> OAuth client ID
+4. Application type: Web application
+5. Add authorized JavaScript origins:
+   http://127.0.0.1:8080
+   https://www.niharika.com
+6. Save and copy the Client ID.
+
+
+START NIHARIKA WITH GOOGLE SSO ENABLED
+
+PowerShell example:
+
+$env:GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+$env:HOST = "0.0.0.0"
+$env:PORT = "8080"
+python app.py
+
+
+WHAT THE APP STORES
+
+After Google verifies the sign-in token, Niharika stores only basic customer profile data:
+
+C:\Users\saran\niharika\customers.json
+
+Stored fields:
+- email
+- name
+- picture
+- Google subject id
+- last login time
+
+The app does not store Google passwords.

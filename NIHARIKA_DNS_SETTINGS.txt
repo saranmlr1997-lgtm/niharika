@@ -1,0 +1,80 @@
+NIHARIKA DNS SETTINGS
+Generated for connecting www.niharika.com and nina.niharika.com to the local Niharika laptop server through Cloudflare Tunnel.
+
+Cloudflare Tunnel Name:
+niharika-wholesale
+
+Cloudflare Tunnel ID:
+582142fb-5ff8-4520-8254-f24acdbad701
+
+Cloudflare Tunnel Target:
+582142fb-5ff8-4520-8254-f24acdbad701.cfargotunnel.com
+
+
+CURRENT DNS STATUS
+Domain niharika.com is currently using IONOS nameservers:
+ns1038.ui-dns.org
+ns1068.ui-dns.com
+ns1123.ui-dns.de
+ns1070.ui-dns.biz
+
+Current www.niharika.com points to old IONOS hosting:
+A record: 217.160.0.26
+AAAA record: 2001:8d8:100f:f000::2e1
+
+
+CHANGE REQUIRED IN IONOS DNS
+
+1. Delete existing www records:
+
+Host: www
+Type: A
+Value: 217.160.0.26
+
+Host: www
+Type: AAAA
+Value: 2001:8d8:100f:f000::2e1
+
+
+2. Add this CNAME record for the Niharika website:
+
+Host: www
+Type: CNAME
+Value: 582142fb-5ff8-4520-8254-f24acdbad701.cfargotunnel.com
+
+
+3. Add this CNAME record for the Nina chatbot app:
+
+Host: nina
+Type: CNAME
+Value: 582142fb-5ff8-4520-8254-f24acdbad701.cfargotunnel.com
+
+
+EXPECTED RESULTS AFTER DNS PROPAGATION
+
+Niharika website:
+https://www.niharika.com
+
+Nina chatbot:
+https://nina.niharika.com
+
+
+LOCAL SERVER REQUIREMENTS
+
+Keep this Windows laptop on and connected to the internet.
+
+Local Niharika server:
+http://127.0.0.1:8080
+
+Local Nina server:
+http://127.0.0.1:5000
+
+Cloudflare Tunnel config:
+C:\Users\saran\.cloudflared\config.yml
+
+Live project folder:
+C:\Users\saran\niharika
+
+
+IMPORTANT NOTE
+Do not point DNS directly to the laptop IP address. Use the Cloudflare Tunnel CNAME above.

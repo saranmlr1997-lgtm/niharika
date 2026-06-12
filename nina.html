@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nina | Niharika Wholesale</title>
+  <meta name="description" content="Nina is the Niharika wholesale chatbot for buyer requirements, product questions, and follow-up preparation.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17191f;
+      --muted: #626b76;
+      --line: #dde3e8;
+      --paper: #ffffff;
+      --wash: #f6f8f6;
+      --forest: #255245;
+      --copper: #b35f38;
+      --sky: #397c9d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--wash);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px clamp(18px, 5vw, 64px);
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--forest);
+      color: white;
+      font-weight: 900;
+    }
+
+    nav {
+      display: flex;
+      gap: clamp(10px, 2vw, 24px);
+      color: var(--muted);
+      font-size: 0.94rem;
+      white-space: nowrap;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(320px, 1.18fr);
+      gap: clamp(24px, 5vw, 70px);
+      align-items: start;
+      min-height: calc(100vh - 65px);
+      padding: clamp(28px, 6vw, 76px) clamp(18px, 5vw, 64px);
+    }
+
+    .intro {
+      padding-top: clamp(8px, 3vw, 44px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--forest);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--copper);
+    }
+
+    h1 {
+      max-width: 620px;
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 32px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--line);
+    }
+
+    .fact {
+      padding: 16px;
+      background: var(--paper);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .fact strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1.25rem;
+    }
+
+    .chat {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 18px 55px rgba(23, 25, 31, 0.12);
+    }
+
+    .chat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .chat-head strong { font-size: 1.1rem; }
+    .chat-head span { color: var(--muted); font-size: 0.9rem; }
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 390px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 16px;
+      background:
+        linear-gradient(rgba(246, 248, 246, 0.9), rgba(246, 248, 246, 0.9)),
+        url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80") center/cover;
+    }
+
+    .message {
+      max-width: 82%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      border-color: rgba(37, 82, 69, 0.35);
+      background: #edf5f2;
+    }
+
+    .composer {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      background: white;
+    }
+
+    select,
+    input,
+    button {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 0 12px;
+      color: var(--ink);
+      background: white;
+    }
+
+    button {
+      padding: 0 18px;
+      border-color: var(--ink);
+      background: var(--ink);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    @media (max-width: 880px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      nav { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+      main { grid-template-columns: 1fr; }
+      .facts { grid-template-columns: 1fr; }
+      .composer { grid-template-columns: 1fr; }
+      .messages { max-height: none; }
+      .message { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="mark">N</span>
+      <span>Nina</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Niharika Wholesale</a>
+      <a href="/survey">Survey</a>
+      <a href="/admin">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="nina-title">
+      <span class="eyebrow">Niharika wholesale chatbot</span>
+      <h1 id="nina-title">Nina</h1>
+      <p>
+        Ask Nina about wholesale requirements, categories, quantity, budget, delivery city, and next buying steps.
+        Nina helps Niharika understand buyer needs before follow-up.
+      </p>
+      <div class="facts" aria-label="Nina capabilities">
+        <div class="fact"><strong>Sarees</strong>Wholesale enquiries</div>
+        <div class="fact"><strong>Kurtis</strong>Boutique and shop needs</div>
+        <div class="fact"><strong>Crop Tops</strong>Quantity and budget signals</div>
+      </div>
+    </section>
+
+    <section class="chat" aria-label="Chat with Nina">
+      <div class="chat-head">
+        <div>
+          <strong>Chat with Nina</strong><br>
+          <span>Powered by /api/chat</span>
+        </div>
+      </div>
+      <div id="messages" class="messages">
+        <div class="message">Hi, I am Nina for Niharika. Tell me what product you need, quantity, budget, and delivery city.</div>
+      </div>
+      <form id="chat-form" class="composer">
+        <select id="user-type" aria-label="User type">
+          <option value="wholesale buyer">Wholesale Buyer</option>
+          <option value="business">Business</option>
+        </select>
+        <input id="message" name="message" autocomplete="off" placeholder="Ask about sarees, kurtis, crop tops, quantity, or budget" required>
+        <button id="send" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector("#chat-form");
+    const input = document.querySelector("#message");
+    const button = document.querySelector("#send");
+    const userType = document.querySelector("#user-type");
+    const messages = document.querySelector("#messages");
+
+    function addMessage(text, role) {
+      const bubble = document.createElement("div");
+      bubble.className = `message ${role || ""}`.trim();
+      bubble.textContent = text;
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+      button.disabled = true;
+      button.textContent = "Sending";
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, user_type: userType.value }),
+        });
+        const data = await response.json();
+        addMessage(data.reply || data.error || "Nina could not respond yet.", "");
+      } catch (error) {
+        addMessage("Nina could not connect to the local API. Check that the Flask app is running.", "");
+      } finally {
+        button.disabled = false;
+        button.textContent = "Send";
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>

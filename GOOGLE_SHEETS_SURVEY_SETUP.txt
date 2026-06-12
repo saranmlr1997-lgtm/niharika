@@ -1,0 +1,94 @@
+GOOGLE SHEETS SETUP FOR NIHARIKA SURVEY RESPONSES
+
+The Niharika app can store survey responses locally and optionally send every response to Google Sheets.
+
+Local files created by the app:
+C:\Users\saran\niharika\survey_responses.json
+C:\Users\saran\niharika\survey_responses.csv
+
+
+STEP 1: Create a Google Sheet
+
+Create a Google Sheet with a tab named:
+Responses
+
+Add this header row:
+id | created_at | wholesale_order_no | name | email | phone | business_name | instagram_handle | buyer_type | product_category | pieces_required | budget | delivery_city | timeline | requirements | source
+
+
+STEP 2: Open Apps Script
+
+In Google Sheets:
+Extensions -> Apps Script
+
+Paste this code:
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Responses");
+  const data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    data.id || "",
+    data.created_at || "",
+    data.wholesale_order_no || "",
+    data.name || "",
+    data.email || "",
+    data.phone || "",
+    data.business_name || "",
+    data.instagram_handle || "",
+    data.buyer_type || "",
+    data.product_category || "",
+    data.pieces_required || "",
+    data.budget || "",
+    data.delivery_city || "",
+    data.timeline || "",
+    data.requirements || "",
+    data.source || ""
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+STEP 3: Deploy Apps Script
+
+Click Deploy -> New deployment
+Type: Web app
+Execute as: Me
+Who has access: Anyone
+
+Copy the Web App URL.
+
+
+STEP 4: Start Niharika with Google Sheets enabled
+
+Set this environment variable before starting the app:
+
+GOOGLE_SHEETS_WEBHOOK_URL=<your Apps Script Web App URL>
+NIHARIKA_WHATSAPP_NUMBER=<country code + WhatsApp number, digits only>
+
+On Windows PowerShell example:
+
+$env:GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+$env:NIHARIKA_WHATSAPP_NUMBER = "919999999999"
+$env:HOST = "0.0.0.0"
+$env:PORT = "8080"
+python app.py
+
+
+SURVEY URL
+
+Local:
+http://127.0.0.1:8080/survey
+
+Public after DNS/tunnel:
+https://www.niharika.com/survey
+
+
+ADMIN CHECK
+
+Admin page:
+http://127.0.0.1:8080/admin
+
+Admin token:
+Use the secure NIHARIKA_ADMIN_TOKEN from C:\Users\saran\niharika\niharika-secrets.ps1.

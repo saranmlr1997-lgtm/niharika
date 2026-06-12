@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Force HTTPS for both domains after SSL is active.
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Keep www versions clean if they are enabled in DNS.
+RewriteCond %{HTTP_HOST} ^www\.(pickwise\.guru|pickwise\.co)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# Static Hostinger route for the Algorithms page.
+RewriteRule ^algorithms/?$ algorithms.html [L]
+RewriteRule ^edtech-apis/?$ edtech-apis.html [L]
+RewriteRule ^mentors/?$ mentors.html [L]
+
+# Serve the static website entry point.
+DirectoryIndex index.html
