@@ -41,3 +41,15 @@ Use `niharika-secrets-template.ps1` as the template.
 ## Public Access
 
 Temporary Cloudflare links are generated with `cloudflared`. Permanent DNS for `www.niharika.com` must point to the named Cloudflare tunnel target documented in `NIHARIKA_DNS_SETTINGS.txt`.
+
+## Deploy This Repo To The Live Windows App
+
+This repo is the clean GitHub source. The currently live app still runs from:
+
+`C:\Users\saran\niharika`
+
+To copy the repo contents into the live folder and restart the local services plus Cloudflare tunnel, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\deploy-live-update.ps1
+```
