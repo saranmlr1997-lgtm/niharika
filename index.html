@@ -762,122 +762,13 @@
 
         <section class="section" aria-labelledby="catalog-title">
           <div class="section-head">
-            <h2 id="catalog-title">Niharika Wholesale Catalogue</h2>
-            <p>Customers can browse Sarees, Kurtis, and Crop tops, then choose an item and send the requirement to Nina.</p>
+            <h2 id="catalog-title">Niharika Catalogue Pieces</h2>
+            <p>Customers can browse available pieces, choose an item, and send the requirement directly to Nina.</p>
           </div>
           <div class="catalog-tools" aria-label="Catalogue filters">
-            <select id="catalog-filter" class="catalog-filter" aria-label="Filter catalogue">
-              <option value="all">All categories</option>
-              <option value="Sarees">Sarees</option>
-              <option value="Kurtis">Kurtis</option>
-              <option value="Crop tops">Crop tops</option>
-            </select>
             <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
           </div>
           <div id="catalog-grid" class="catalog-grid" aria-live="polite"></div>
-        </section>
-
-        <section class="section" aria-labelledby="film-title">
-          <div class="section-head">
-            <h2 id="film-title">Niharika Short Film</h2>
-            <p>A quick product film for B2B buyers to preview the collection before sending requirements.</p>
-          </div>
-          <div class="film-wrap">
-            <div class="film-frame">
-              <video controls playsinline preload="metadata" poster="/media/niharika-short-film-poster.jpg">
-                <source src="/media/niharika-short-film.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="film-note">
-              <span class="eyebrow">Product story</span>
-              <h2>Export the Google Photos video as MP4.</h2>
-              <p>Once the file is placed as <strong>niharika-short-film.mp4</strong>, this section will play the final customer film automatically.</p>
-              <div class="actions">
-                <a class="button" href="#loom-title">See our loom story</a>
-                <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
-              </div>
-            </div>
-          </div>
-          <div id="short-film-grid" class="short-film-grid" aria-live="polite"></div>
-        </section>
-
-        <section class="section" aria-labelledby="loom-title">
-          <div class="section-head">
-            <h2 id="loom-title">From Our Loom</h2>
-            <p>Selected saree and kurti moments from Sivashankari, curated for Niharika wholesale buyers.</p>
-          </div>
-          <div id="loom-grid" class="loom-grid" aria-live="polite"></div>
-        </section>
-
-        <section class="section" aria-labelledby="recommended-title">
-          <div class="section-head">
-            <h2 id="recommended-title">Wholesale Recommendations For Buyers</h2>
-            <p>Nina can turn buyer interest into a clearer category, quantity, budget, delivery city, and next follow-up.</p>
-          </div>
-          <div class="shelf">
-            <article class="pick-card">
-              <div class="cover"><span class="score">94 fit</span></div>
-              <div class="pick-body">
-                <h3>Sarees</h3>
-                <p>Capture fabric, quantity, budget, color preference, and delivery timing.</p>
-              </div>
-            </article>
-            <article class="pick-card">
-              <div class="cover copper"><span class="score">91 fit</span></div>
-              <div class="pick-body">
-                <h3>Kurtis</h3>
-                <p>Match boutiques and shops with useful quantity and style signals.</p>
-              </div>
-            </article>
-            <article class="pick-card">
-              <div class="cover berry"><span class="score">88 fit</span></div>
-              <div class="pick-body">
-                <h3>Crop Tops</h3>
-                <p>Collect size, color, budget, and resale requirements before quoting.</p>
-              </div>
-            </article>
-            <article class="pick-card">
-              <div class="cover dark"><span class="score">86 fit</span></div>
-              <div class="pick-body">
-                <h3>Nina Chatbot</h3>
-                <p>Ask follow-up questions and save wholesale leads for admin review.</p>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="money-title">
-          <div class="business">
-            <div class="panel">
-              <h2 id="money-title">Built for Niharika wholesale enquiries and buyer follow-up.</h2>
-              <p>
-                Use Nina to collect visitor intent, understand buyer requirements,
-                and prepare the next step for Niharika wholesale orders.
-              </p>
-              <div class="actions">
-                <a class="button" href="https://wa.me/918149869054" target="_blank" rel="noopener">WhatsApp Business</a>
-                <a class="button secondary" href="/signup">First Month Free</a>
-                <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
-              </div>
-            </div>
-            <div class="panel">
-              <span class="eyebrow">Wholesale assistant</span>
-              <div class="price"><strong>First month free</strong><span>Then Rs. 500 / month</span></div>
-              <p>Create a focused wholesale enquiry flow with Nina, survey capture, and admin review.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="signals-title">
-          <div class="section-head">
-            <h2 id="signals-title">Signals Nina Captures</h2>
-            <p>Practical wholesale details Niharika can act on quickly.</p>
-          </div>
-          <div class="metrics">
-            <div class="metric"><strong>12</strong>decision factors</div>
-            <div class="metric"><strong>3</strong>best options</div>
-            <div class="metric"><strong>1</strong>clear next step</div>
-          </div>
         </section>
       </main>
 
@@ -896,9 +787,6 @@
     const buyerPhone = document.querySelector("#buyer-phone");
     const ninaMessages = document.querySelector("#nina-messages");
     const catalogGrid = document.querySelector("#catalog-grid");
-    const catalogFilter = document.querySelector("#catalog-filter");
-    const loomGrid = document.querySelector("#loom-grid");
-    const shortFilmGrid = document.querySelector("#short-film-grid");
     let catalogItems = [];
 
     function addNinaMessage(text, role) {
@@ -914,9 +802,7 @@
     }
 
     function renderCatalog() {
-      const selected = catalogFilter.value;
-      const visibleItems = catalogItems.filter((item) => selected === "all" || item.category === selected);
-      catalogGrid.innerHTML = visibleItems.map((item) => {
+      catalogGrid.innerHTML = catalogItems.map((item) => {
         const image = item.image_url
           ? `<img src="${item.image_url}" alt="${item.name}">`
           : `<span>${fallbackLabel(item)}</span>`;
@@ -951,44 +837,6 @@
         catalogGrid.innerHTML = `<article class="catalog-card"><div class="catalog-body"><h3>Catalogue loading</h3><p>Please message Nina with the product category and quantity.</p></div></article>`;
       }
     }
-
-    async function loadLoomMedia() {
-      try {
-        const response = await fetch("/api/loom-media");
-        const data = await response.json();
-        const items = data.items || [];
-        if (!items.length) {
-          loomGrid.innerHTML = `<div class="loom-empty">Selected saree and kurti photos will appear here once added.</div>`;
-          return;
-        }
-        loomGrid.innerHTML = items.map((item) => {
-          if (item.type === "video") {
-            return `<article class="loom-card"><video controls playsinline preload="metadata" src="${item.url}"></video></article>`;
-          }
-          return `<article class="loom-card"><img src="${item.url}" alt="Niharika loom selection"></article>`;
-        }).join("");
-      } catch (error) {
-        loomGrid.innerHTML = `<div class="loom-empty">From Our Loom media is not reachable right now.</div>`;
-      }
-    }
-
-    async function loadShortFilmMedia() {
-      try {
-        const response = await fetch("/api/short-film-media");
-        const data = await response.json();
-        const items = data.items || [];
-        shortFilmGrid.innerHTML = items.map((item) => {
-          if (item.type === "video") {
-            return `<article class="short-film-card"><video controls playsinline preload="metadata" src="${item.url}"></video></article>`;
-          }
-          return `<article class="short-film-card"><img src="${item.url}" alt="Niharika short film selection"></article>`;
-        }).join("");
-      } catch (error) {
-        shortFilmGrid.innerHTML = "";
-      }
-    }
-
-    catalogFilter.addEventListener("change", renderCatalog);
 
     catalogGrid.addEventListener("click", (event) => {
       const button = event.target.closest(".choose-catalog");
@@ -1029,8 +877,6 @@
     });
 
     loadCatalog();
-    loadLoomMedia();
-    loadShortFilmMedia();
   </script>
 </body>
 </html>
