@@ -41,4 +41,8 @@ if (-not (Test-Path $RestartScript)) {
     throw "Restart script not found: $RestartScript"
 }
 
+Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -like "*C:\Users\saran\niharika*" -and ($_.CommandLine -like "*app.py*" -or $_.CommandLine -like "*flask_app.py*") } |
+    ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+
 powershell -ExecutionPolicy Bypass -File $RestartScript

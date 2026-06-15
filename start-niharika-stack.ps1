@@ -17,10 +17,15 @@ function Test-CommandLineProcess {
 }
 
 function Start-NiharikaApp {
-    if (-not (Test-CommandLineProcess "app.py")) {
+    if (Test-CommandLineProcess "app.py") {
+        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+            Where-Object { $_.CommandLine -like "*app.py*" } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+    }
+    if (-not (Test-CommandLineProcess "flask_app.py")) {
         $env:HOST = "0.0.0.0"
         $env:PORT = "8080"
-        Start-Process -FilePath $PythonExe -ArgumentList "app.py" -WorkingDirectory $ProjectDir -WindowStyle Hidden
+        Start-Process -FilePath $PythonExe -ArgumentList "flask_app.py" -WorkingDirectory $ProjectDir -WindowStyle Hidden
     }
 }
 

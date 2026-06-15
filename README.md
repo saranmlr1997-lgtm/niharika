@@ -77,3 +77,5 @@ To copy the repo contents into the live folder and restart the local services pl
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\deploy-live-update.ps1
 ```
+
+The live deploy helper now switches the Niharika web app over to the Flask runtime (`flask_app.py`) on port `8080`.
