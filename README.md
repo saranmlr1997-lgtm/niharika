@@ -20,6 +20,30 @@ $env:PORT = "8080"
 & "C:\Users\saran\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" app.py
 ```
 
+## Run Niharika As Flask
+
+The repo now includes a Flask application entrypoint for a more standard API/app deployment path:
+
+```powershell
+cd "C:\Users\saran\niharika"
+$env:HOST = "0.0.0.0"
+$env:PORT = "8080"
+& "C:\Users\saran\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" flask_app.py
+```
+
+This keeps the existing routes and business logic, but serves them through Flask so the project is easier to evolve toward a SaaS-style deployment.
+
+## SaaS Foundation
+
+The project now includes an initial multi-tenant storage layer:
+
+- `saas_store.py` stores businesses and leads in SQLite
+- each business gets a `tenant_slug`
+- leads are stored with tenant-aware fields
+- the Flask app exposes `POST /api/admin/tenants` for a simple tenant summary view
+
+This is a foundation step toward a real SaaS app. It keeps the current API shape while moving the project away from flat JSON-only storage.
+
 ## Run Nina
 
 Nina is a Flask chatbot app. Gemini is optional and requires `GOOGLE_API_KEY`.

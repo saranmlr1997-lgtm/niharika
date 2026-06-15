@@ -12,6 +12,7 @@ from urllib.parse import parse_qs, quote_plus, unquote, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 import secrets
+from saas_store import SaaSStore, tenant_slug_from_text
 
 
 HOST = os.environ.get("HOST", "127.0.0.1")
@@ -31,6 +32,7 @@ NINA_CHAT_URL = os.environ.get("NINA_CHAT_URL", "http://127.0.0.1:5000/api/chat"
 NINA_CHAT_TIMEOUT = float(os.environ.get("NINA_CHAT_TIMEOUT", "4"))
 NIHARIKA_INSTAGRAM_URL = "https://www.instagram.com/direct/inbox/"
 NIHARIKA_WHATSAPP_URL = "https://wa.me/918149869054"
+SAAS_STORE = SaaSStore(os.path.dirname(__file__))
 
 
 FALLBACK_COURSERA_POSTS = [
@@ -760,27 +762,39 @@ def customer_store_path():
 
 
 def load_businesses():
+    businesses = SAAS_STORE.load_businesses()
+    if businesses:
+        return businesses
     path = business_store_path()
     if not os.path.exists(path):
         return {}
     with open(path, "r", encoding="utf-8-sig") as business_file:
-        return json.load(business_file)
+        businesses = json.load(business_file)
+    SAAS_STORE.save_businesses(businesses)
+    return businesses
 
 
 def save_businesses(businesses):
+    SAAS_STORE.save_businesses(businesses)
     with open(business_store_path(), "w", encoding="utf-8") as business_file:
         json.dump(businesses, business_file, indent=2)
 
 
 def load_leads():
+    leads = SAAS_STORE.load_leads()
+    if leads:
+        return leads
     path = leads_store_path()
     if not os.path.exists(path):
         return []
     with open(path, "r", encoding="utf-8-sig") as leads_file:
-        return json.load(leads_file)
+        leads = json.load(leads_file)
+    SAAS_STORE.save_leads(leads)
+    return leads
 
 
 def save_leads(leads):
+    SAAS_STORE.save_leads(leads)
     with open(leads_store_path(), "w", encoding="utf-8") as leads_file:
         json.dump(leads, leads_file, indent=2)
 
@@ -1052,10 +1066,16 @@ def save_survey_response(payload):
 
 def save_lead(payload, nina_result):
     leads = load_leads()
+    tenant_slug = (
+        (payload.get("tenant_slug") or "").strip()
+        or tenant_slug_from_text(payload.get("business_name") or payload.get("buyer_email") or "public")
+    )
     lead = {
         "id": "lead_" + secrets.token_hex(8),
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "new",
+        "tenant_slug": tenant_slug,
+        "business_email": normalize_email(payload.get("business_email") or payload.get("buyer_email")),
         "buyer_name": (payload.get("buyer_name") or "").strip(),
         "buyer_email": normalize_email(payload.get("buyer_email")),
         "buyer_phone": (payload.get("buyer_phone") or "").strip(),
@@ -1154,6 +1174,7 @@ def public_business_record(business):
     return {
         "business_name": business.get("business_name"),
         "email": business.get("email"),
+        "tenant_slug": business.get("tenant_slug"),
         "instagram_handle": business.get("instagram_handle"),
         "website": business.get("website"),
         "shopify_store_domain": business.get("shopify_store_domain"),
@@ -1226,6 +1247,7 @@ def create_business(payload):
     business = {
         "business_name": business_name,
         "email": email,
+        "tenant_slug": tenant_slug_from_text(business_name),
         "password_salt": salt,
         "password_hash": digest,
         "instagram_handle": instagram_handle,
