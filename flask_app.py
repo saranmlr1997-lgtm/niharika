@@ -60,6 +60,7 @@ def allowed_origin():
     allowed_origins = {
         "http://127.0.0.1:8080",
         "http://localhost:8080",
+        "https://niharika.com",
         "https://www.niharika.com",
         "https://nina.niharika.com",
     }
@@ -128,6 +129,11 @@ def business_dashboard_page():
 @app.route("/robots.txt", methods=["GET"])
 def robots():
     return Response("User-agent: *\nAllow: /\nSitemap: https://www.niharika.com/sitemap.xml\n", mimetype="text/plain")
+
+
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({"app": "niharika-web", "status": "ok"})
 
 
 @app.route("/sitemap.xml", methods=["GET"])

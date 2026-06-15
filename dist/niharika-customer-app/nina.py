@@ -11,39 +11,49 @@ client = None
 
 
 KNOWLEDGE_BASE = {
-    "wholesale_resources": [
+    "fashiontech_resources": [
         {
-            "source": "Niharika wholesale intake",
+            "source": "Niharika fashiontech intake",
             "topic": "Buyer Requirement Basics",
-            "insight": "A useful wholesale enquiry should include category, quantity, budget range, delivery city, and purchase timeline.",
+            "insight": "A strong fashion enquiry includes product category, occasion, fabric preference, size mix, quantity, budget, delivery city, and purchase timeline.",
         },
         {
-            "source": "Niharika category guide",
+            "source": "Niharika style guide",
             "topic": "Product Categories",
-            "insight": "Niharika focuses on Sarees, Kurtis, and Crop tops for wholesale buyer conversations.",
+            "insight": "Niharika focuses on Sarees, Kurtis, and Crop tops, with styling guidance for festive, office, casual, boutique, and resale needs.",
+        },
+        {
+            "source": "Niharika merchandising guide",
+            "topic": "Boutique Inventory",
+            "insight": "Boutiques should clarify target customer, size curve, preferred colors, margin goal, repeat-stock potential, and whether the collection is trend-led or evergreen.",
         },
     ],
     "business_advice": [
         {
-            "name": "Niharika sales team",
-            "expertise": "Wholesale follow-up",
-            "advice": "Ask for business name, Instagram handle, phone or WhatsApp number, product category, and pieces required before preparing a quote.",
+            "name": "Niharika fashion desk",
+            "expertise": "Fashiontech merchandising",
+            "advice": "Ask for business name, Instagram handle, customer segment, product category, size mix, price band, margin target, and pieces required before preparing a quote.",
         },
         {
             "name": "Niharika buyer desk",
             "expertise": "Order qualification",
-            "advice": "For serious wholesale leads, confirm whether the buyer is a shop, boutique, reseller, or business customer.",
+            "advice": "For serious fashion leads, confirm whether the buyer is a shop, boutique, reseller, creator, stylist, or direct customer.",
+        },
+        {
+            "name": "Niharika styling desk",
+            "expertise": "Style matching",
+            "advice": "Match recommendations to occasion, climate, age group, fabric comfort, color preference, and whether the buyer wants fast-moving basics or standout statement pieces.",
         },
     ],
 }
 
 
 def build_enriched_prompt(user_message, user_type):
-    """Inject Niharika wholesale guidance into the model context."""
-    context = "Here is verified Niharika wholesale guidance:\n"
+    """Inject Niharika fashiontech guidance into the model context."""
+    context = "Here is verified Niharika fashiontech guidance:\n"
 
-    if user_type == "wholesale buyer":
-        for item in KNOWLEDGE_BASE["wholesale_resources"]:
+    if user_type in {"fashion buyer", "wholesale buyer", "customer"}:
+        for item in KNOWLEDGE_BASE["fashiontech_resources"]:
             context += f"- From {item['source']}: {item['insight']}\n"
     else:
         for mentor in KNOWLEDGE_BASE["business_advice"]:
@@ -61,13 +71,15 @@ def build_enriched_prompt(user_message, user_type):
 def get_system_instruction(user_type):
     base_rules = (
         "Keep your response under 3 sentences. Do not use any markdown formatting or lists. "
-        "Reference Niharika wholesale categories naturally when giving advice. "
-        "Always end with a targeted follow-up question."
+        "Behave like a fashiontech chatbot: combine style advice, merchandising logic, and buying qualification. "
+        "Reference Niharika categories naturally: Sarees, Kurtis, and Crop tops. "
+        "Ask for missing fashion signals such as occasion, fabric, size mix, budget, quantity, margin, or delivery city. "
+        "Always end with one targeted follow-up question."
     )
-    if user_type == "wholesale buyer":
-        return f"You are Nina, the Niharika wholesale chatbot for buyer requirements. {base_rules}"
+    if user_type in {"fashion buyer", "wholesale buyer", "customer"}:
+        return f"You are Nina, the Niharika fashiontech chatbot for buyer styling and wholesale requirements. {base_rules}"
 
-    return f"You are Nina, the Niharika business assistant for wholesale enquiries. {base_rules}"
+    return f"You are Nina, the Niharika fashiontech business assistant for boutique, reseller, and inventory decisions. {base_rules}"
 
 
 def get_client():
@@ -82,20 +94,23 @@ def get_client():
 def fallback_chat_reply(user_message):
     lower = user_message.lower()
     if any(word in lower for word in ["saree", "sarees"]):
-        reply = "For Niharika sarees, please share fabric preference, quantity, budget per piece, and delivery city so the team can prepare a useful wholesale quote."
-        next_question = "How many sarees do you need and where should they be delivered?"
-    elif any(word in lower for word in ["kurti", "kurtis"]):
-        reply = "For Niharika kurtis, Nina should capture quantity, size mix, target price, quality level, and delivery timeline before sales follow-up."
-        next_question = "What quantity and budget range should I note for the kurti enquiry?"
+        reply = "For Niharika sarees, Nina can help choose between festive, daily wear, boutique resale, or premium looks using fabric, color, budget, and occasion."
+        next_question = "What occasion, fabric preference, quantity, and delivery city should I match for the saree requirement?"
+    elif any(word in lower for word in ["kurti", "kurtis", "kurta"]):
+        reply = "For Niharika kurtis, Nina can plan a size mix, color story, price band, and margin-friendly assortment for boutique or reseller stock."
+        next_question = "What size range, quantity, and target selling price should I use for the kurti recommendation?"
     elif any(word in lower for word in ["crop", "top", "tops"]):
-        reply = "For crop tops, please share style, size mix, color preference, quantity, and whether this is for resale or boutique stock."
-        next_question = "What size mix and delivery city should Niharika use for the quote?"
-    elif any(word in lower for word in ["price", "budget", "quote", "cost"]):
-        reply = "Niharika can quote better when Nina has category, quantity, budget range, delivery city, and purchase timeline."
-        next_question = "Which category and quantity should I prepare the quote around?"
+        reply = "For crop tops, Nina can match trend, color, size mix, and customer segment so the stock feels current and sellable."
+        next_question = "Is this for college wear, party wear, boutique resale, or casual daily stock?"
+    elif any(word in lower for word in ["style", "trend", "occasion", "festival", "wedding", "office", "college"]):
+        reply = "Nina can style-match Niharika pieces by occasion, age group, climate, fabric comfort, and budget before turning it into a buying shortlist."
+        next_question = "Which occasion and customer age group should I style for?"
+    elif any(word in lower for word in ["price", "budget", "quote", "cost", "margin", "profit"]):
+        reply = "For fashion buying, Nina needs target cost, expected selling price, quantity, and customer segment to judge margin and stock fit."
+        next_question = "What is your target cost per piece and expected selling price?"
     else:
-        reply = "I am Nina for Niharika. I can collect wholesale requirements for Sarees, Kurtis, and Crop tops, then guide the next buying step."
-        next_question = "What product category, quantity, budget, and delivery city should I note?"
+        reply = "I am Nina, the Niharika fashiontech assistant. I can help with styling, product discovery, boutique buying, wholesale quantity planning, and resale-ready fashion recommendations."
+        next_question = "Are you looking for Sarees, Kurtis, Crop tops, or a full boutique assortment?"
 
     return f"{reply} {next_question}"
 

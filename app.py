@@ -1568,14 +1568,15 @@ def niharika_api_chat(payload):
         from google.genai import types
 
         context = {
-            "brand": "Niharika Wholesale",
+            "brand": "Niharika Fashiontech",
             "categories": ["Sarees", "Kurtis", "Crop tops"],
             "buyer_type": payload.get("buyer_type") or payload.get("request_type") or "wholesale buyer",
             "recommendation": best_pick,
             "requirements": requirement_result.get("requirements", {}),
         }
         prompt = (
-            "You are Nina, the Niharika wholesale and retail buying assistant. "
+            "You are Nina, the Niharika fashiontech chatbot for styling, boutique buying, and wholesale qualification. "
+            "Blend fashion advice with practical buying signals like occasion, fabric, size mix, price band, margin, quantity, and delivery city. "
             "Keep the answer under 3 sentences, avoid markdown, and end with one targeted follow-up question. "
             f"Context JSON: {json.dumps(context, ensure_ascii=True)}\n"
             f"Customer message: {message}"
@@ -1650,9 +1651,9 @@ def nina_requirement_reply(payload):
 
     if not message:
         return {
-            "reply": "Hi, I am Nina for Niharika. Tell me what products you need, quantity, budget range, delivery city, and whether this is for resale, gifting, or store inventory.",
+            "reply": "Hi, I am Nina, the Niharika fashiontech assistant. Tell me the product, occasion, style, quantity, budget, size mix, and delivery city so I can guide the right fashion buying step.",
             "requirements": {},
-            "next_question": "What product category are you looking for first?",
+            "next_question": "Are you looking for Sarees, Kurtis, Crop tops, or a boutique assortment?",
         }
 
     requirements = {
@@ -1666,23 +1667,29 @@ def nina_requirement_reply(payload):
         "budget_sensitive": ["cheap", "budget", "low price", "affordable", "discount"],
         "premium_quality": ["premium", "quality", "export", "best", "branded"],
         "reseller": ["resell", "reseller", "shop", "store", "boutique"],
+        "style_occasion": ["wedding", "festival", "festive", "office", "college", "party", "casual"],
+        "fabric_fit": ["cotton", "silk", "georgette", "rayon", "linen", "chiffon", "size", "sizes", "fit"],
+        "margin_planning": ["margin", "profit", "selling price", "mrp", "retail price"],
     }
     for signal, words in signals.items():
         if any(word in lower for word in words):
             requirements["detected_signals"].append(signal)
 
     if "price" in lower or "budget" in lower or "cost" in lower:
-        reply = "For wholesale pricing, I need product category, approximate quantity, and delivery city. Niharika can then share the best-fit wholesale option and next buying step."
-        next_question = "What quantity range should I quote for you?"
+        reply = "For fashion pricing, I need product category, target cost, expected selling price, quantity, and customer segment so Nina can judge margin and stock fit."
+        next_question = "What is your target cost per piece and expected selling price?"
     elif "instagram" in lower or "ig" in lower:
-        reply = "I can use the Instagram business handle as a trust signal and route verified businesses into Niharika business access. For wholesale buying, I still need product category and quantity."
+        reply = "I can use the Instagram business handle as a trust signal and understand the store style before suggesting Niharika stock. For the fashion match, I still need product category, customer segment, and quantity."
         next_question = "Which Instagram business handle should Niharika verify?"
+    elif any(word in lower for word in ["style", "trend", "wedding", "festival", "office", "college", "party"]):
+        reply = "I can style-match Niharika pieces by occasion, customer age group, fabric comfort, color preference, and budget before turning it into a buying shortlist."
+        next_question = "Which occasion and customer age group should I style for?"
     elif requirements["detected_signals"]:
-        reply = "I found a few buying signals from your message. To recommend correctly, Niharika needs category, quantity, budget range, delivery location, and expected purchase timeline."
-        next_question = "Which delivery city and timeline should I note?"
+        reply = "I found fashion buying signals in your message. To recommend correctly, Niharika needs category, occasion, size mix, quantity, budget range, delivery location, and expected purchase timeline."
+        next_question = "Which size mix, delivery city, and timeline should I note?"
     else:
-        reply = "Thanks, I can help collect the wholesale requirement for Niharika. Please share product type, quantity, target price range, delivery city, and whether you are buying for resale or personal use."
-        next_question = "What product type and quantity do you need?"
+        reply = "Thanks, I can help as Niharika's fashiontech assistant. Please share product type, style or occasion, size mix, quantity, target price range, delivery city, and whether this is for resale or personal use."
+        next_question = "What product type, occasion, and quantity do you need?"
 
     return {
         "reply": reply,

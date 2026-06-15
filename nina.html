@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nina | Niharika Wholesale</title>
-  <meta name="description" content="Nina is the Niharika wholesale chatbot for buyer requirements, product questions, and follow-up preparation.">
+  <title>Nina | Niharika Fashiontech</title>
+  <meta name="description" content="Nina is the Niharika fashiontech chatbot for styling, boutique buying, product questions, and wholesale follow-up preparation.">
   <style>
     :root {
       color-scheme: light;
@@ -241,7 +241,7 @@
       <span>Nina</span>
     </a>
     <nav aria-label="Main navigation">
-      <a href="/">Niharika Wholesale</a>
+      <a href="/">Niharika Fashiontech</a>
       <a href="/survey">Survey</a>
       <a href="/admin">Admin</a>
     </nav>
@@ -249,16 +249,16 @@
 
   <main>
     <section class="intro" aria-labelledby="nina-title">
-      <span class="eyebrow">Niharika wholesale chatbot</span>
+      <span class="eyebrow">Niharika fashiontech chatbot</span>
       <h1 id="nina-title">Nina</h1>
       <p>
-        Ask Nina about wholesale requirements, categories, quantity, budget, delivery city, and next buying steps.
-        Nina helps Niharika understand buyer needs before follow-up.
+        Ask Nina about styling, product fit, boutique assortments, size mix, quantity, budget, delivery city, and next buying steps.
+        Nina helps Niharika turn fashion needs into clear recommendations and follow-up.
       </p>
       <div class="facts" aria-label="Nina capabilities">
-        <div class="fact"><strong>Sarees</strong>Wholesale enquiries</div>
-        <div class="fact"><strong>Kurtis</strong>Boutique and shop needs</div>
-        <div class="fact"><strong>Crop Tops</strong>Quantity and budget signals</div>
+        <div class="fact"><strong>Sarees</strong>Occasion and fabric match</div>
+        <div class="fact"><strong>Kurtis</strong>Size mix and boutique stock</div>
+        <div class="fact"><strong>Crop Tops</strong>Trend and margin signals</div>
       </div>
     </section>
 
@@ -270,14 +270,16 @@
         </div>
       </div>
       <div id="messages" class="messages">
-        <div class="message">Hi, I am Nina for Niharika. Tell me what product you need, quantity, budget, and delivery city.</div>
+        <div class="message">Hi, I am Nina, the Niharika fashiontech assistant. Tell me the product, occasion, style, quantity, budget, size mix, and delivery city.</div>
       </div>
       <form id="chat-form" class="composer">
         <select id="user-type" aria-label="User type">
+          <option value="fashion buyer">Fashion Buyer</option>
           <option value="wholesale buyer">Wholesale Buyer</option>
           <option value="business">Business</option>
+          <option value="stylist">Stylist</option>
         </select>
-        <input id="message" name="message" autocomplete="off" placeholder="Ask about sarees, kurtis, crop tops, quantity, or budget" required>
+        <input id="message" name="message" autocomplete="off" placeholder="Ask about sarees, kurtis, crop tops, style, size mix, margin, or budget" required>
         <button id="send" type="submit">Send</button>
       </form>
     </section>

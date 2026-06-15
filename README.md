@@ -1,6 +1,6 @@
 # Niharika Wholesale
 
-Niharika Wholesale is a lightweight B2B wholesale website with a catalogue, buyer survey, admin dashboard, and Nina chatbot.
+Niharika Wholesale is a lightweight B2B fashiontech website with a catalogue, buyer survey, admin dashboard, and Nina chatbot for styling, boutique buying, and wholesale follow-up.
 
 ## Main URLs
 
@@ -46,7 +46,7 @@ This is a foundation step toward a real SaaS app. It keeps the current API shape
 
 ## Run Nina
 
-Nina is a Flask chatbot app. Gemini is optional and requires `GOOGLE_API_KEY`.
+Nina is a Flask fashiontech chatbot app. Gemini is optional and requires `GOOGLE_API_KEY`.
 
 ```powershell
 cd "C:\Users\saran\niharika"
@@ -65,6 +65,18 @@ Use `niharika-secrets-template.ps1` as the template.
 ## Public Access
 
 Temporary Cloudflare links are generated with `cloudflared`. Permanent DNS for `www.niharika.com` must point to the named Cloudflare tunnel target documented in `NIHARIKA_DNS_SETTINGS.txt`.
+
+## AWS Deploy
+
+AWS-ready deployment files are now included for a first production move:
+
+- `Dockerfile.web`
+- `Dockerfile.nina`
+- `gunicorn.conf.py`
+- `gunicorn_nina.conf.py`
+- `AWS_DEPLOY.md`
+
+For this codebase, EC2 plus `nginx` is the safest first production path because data is still stored in local JSON and SQLite files.
 
 ## Deploy This Repo To The Live Windows App
 
