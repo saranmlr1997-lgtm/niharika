@@ -30,7 +30,7 @@ NIHARIKA_GEMINI_MODEL = os.environ.get("NIHARIKA_GEMINI_MODEL", "gemini-2.5-flas
 NIHARIKA_WHATSAPP_NUMBER = "".join(ch for ch in os.environ.get("NIHARIKA_WHATSAPP_NUMBER", "") if ch.isdigit())
 NINA_CHAT_URL = os.environ.get("NINA_CHAT_URL", "http://127.0.0.1:5000/api/chat")
 NINA_CHAT_TIMEOUT = float(os.environ.get("NINA_CHAT_TIMEOUT", "4"))
-NIHARIKA_INSTAGRAM_URL = "https://www.instagram.com/direct/inbox/"
+NIHARIKA_INSTAGRAM_URL = "https://www.instagram.com/niharika_kurtis/"
 NIHARIKA_WHATSAPP_URL = "https://wa.me/918149869054"
 SAAS_STORE = SaaSStore(os.path.dirname(__file__))
 
@@ -1343,6 +1343,60 @@ def sign_in_business(payload):
     return business
 
 
+def get_business_dashboard(payload):
+    email = normalize_email(payload.get("email"))
+    password = payload.get("password", "")
+    license_key = (payload.get("license_key") or "").strip()
+    business = load_businesses().get(email)
+    if not business:
+        return None, "Business not found."
+
+    password_ok = bool(password) and verify_password(password, business["password_salt"], business["password_hash"])
+    license_ok = bool(license_key) and business.get("license_key") == license_key
+    if not password_ok and not license_ok:
+        return None, "Use your business email with either the password or the license key."
+
+    tenant_slug = business.get("tenant_slug") or tenant_slug_from_text(business.get("business_name") or email)
+    business_name = (business.get("business_name") or "").strip().casefold()
+
+    leads = []
+    for lead in load_leads():
+        lead_business_email = normalize_email(lead.get("business_email"))
+        lead_tenant_slug = (lead.get("tenant_slug") or "").strip()
+        if lead_business_email:
+            if lead_business_email == email:
+                leads.append(lead)
+            continue
+        if lead_tenant_slug == tenant_slug:
+            leads.append(lead)
+
+    surveys = []
+    for response in load_survey_responses():
+        response_email = normalize_email(response.get("email"))
+        if response_email == email:
+            surveys.append(response)
+
+    lead_status_counts = {"new": 0, "contacted": 0, "converted": 0, "closed": 0}
+    for lead in leads:
+        status = (lead.get("status") or "new").strip().lower()
+        if status in lead_status_counts:
+            lead_status_counts[status] += 1
+
+    dashboard = {
+        "business": public_business_record(business),
+        "summary": {
+            "total_leads": len(leads),
+            "total_orders": len(surveys),
+            "new_leads": lead_status_counts["new"],
+            "converted_leads": lead_status_counts["converted"],
+        },
+        "lead_status_counts": lead_status_counts,
+        "leads": leads,
+        "orders": surveys,
+    }
+    return dashboard, None
+
+
 def admin_update_business(payload):
     if payload.get("admin_token") != NIHARIKA_ADMIN_TOKEN:
         return None, "Invalid admin token."
@@ -2264,6 +2318,211 @@ CUSTOMER_LOGIN_HTML = f"""<!doctype html>
 </html>"""
 
 
+BUSINESS_DASHBOARD_HTML = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Niharika Business Dashboard</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0c0f0d; --panel:#151a17; --panel2:#1c231f; --ink:#f6f7f3; --muted:#aab3aa; --line:rgba(255,255,255,.12); --green:#3fd17a; --gold:#d7ab54; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+    a { color:inherit; text-decoration:none; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:18px 24px; border-bottom:1px solid var(--line); background:rgba(12,15,13,.92); position:sticky; top:0; backdrop-filter:blur(10px); }
+    .brand { font-weight:800; letter-spacing:0; }
+    .wrap { max-width:1180px; margin:0 auto; padding:28px 20px 48px; display:grid; gap:18px; }
+    .hero { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr); gap:18px; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:20px; }
+    .panel h1, .panel h2, .panel h3, .panel p { margin-top:0; }
+    .muted { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; }
+    .stats { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; }
+    .stat { padding:18px; border-radius:8px; border:1px solid var(--line); background:var(--panel2); min-height:120px; }
+    .stat strong { display:block; font-size:2rem; margin-bottom:8px; }
+    form { display:grid; gap:12px; }
+    input, button { width:100%; min-height:44px; border-radius:8px; border:1px solid var(--line); font:inherit; }
+    input { background:#0f1411; color:var(--ink); padding:0 14px; }
+    button { background:var(--green); color:#07110a; font-weight:800; cursor:pointer; }
+    button.secondary { background:transparent; color:var(--ink); }
+    .row { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
+    .table { width:100%; border-collapse:collapse; }
+    .table th, .table td { padding:12px 10px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+    .chip { display:inline-flex; padding:4px 10px; border-radius:999px; background:rgba(63,209,122,.12); color:var(--green); font-size:.84rem; font-weight:700; }
+    .chip.warn { background:rgba(215,171,84,.14); color:var(--gold); }
+    .empty { color:var(--muted); padding:18px 0; }
+    #dashboard { display:none; gap:18px; }
+    #message { display:none; }
+    @media (max-width: 920px) {
+      .hero, .grid, .stats, .row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Niharika SaaS Dashboard</div>
+    <div class="muted">For catalogue businesses using Nina</div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <section class="panel">
+        <p class="muted">Business access</p>
+        <h1>Open your dashboard</h1>
+        <p class="muted">Sign in with your business email and password, or use the email and license key you received during signup.</p>
+        <form id="signin-form">
+          <input name="email" type="email" placeholder="Business email" required>
+          <div class="row">
+            <input name="password" type="password" placeholder="Password">
+            <input name="license_key" placeholder="License key">
+          </div>
+          <button type="submit">Load dashboard</button>
+        </form>
+        <div id="message" class="panel" style="margin-top:14px; padding:14px;"></div>
+      </section>
+      <section class="panel">
+        <p class="muted">What you can track</p>
+        <div class="grid">
+          <div class="stat"><strong>Leads</strong><span class="muted">Every Nina enquiry saved for your business.</span></div>
+          <div class="stat"><strong>Orders</strong><span class="muted">Wholesale survey submissions from your buyers.</span></div>
+          <div class="stat"><strong>Status</strong><span class="muted">New, contacted, converted, and closed lead counts.</span></div>
+          <div class="stat"><strong>Profile</strong><span class="muted">Plan, Shopify, Instagram, and payment readiness.</span></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="dashboard">
+      <section class="stats">
+        <article class="stat"><span class="muted">Total leads</span><strong id="stat-leads">0</strong></article>
+        <article class="stat"><span class="muted">Wholesale enquiries</span><strong id="stat-orders">0</strong></article>
+        <article class="stat"><span class="muted">New leads</span><strong id="stat-new">0</strong></article>
+        <article class="stat"><span class="muted">Converted</span><strong id="stat-converted">0</strong></article>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <p class="muted">Business profile</p>
+          <h2 id="biz-name">Business</h2>
+          <p id="biz-email" class="muted"></p>
+          <p><span id="biz-plan" class="chip"></span></p>
+          <p class="muted">Tenant: <span id="biz-tenant"></span></p>
+          <p class="muted">Shopify: <span id="biz-shopify"></span></p>
+          <p class="muted">Instagram: <span id="biz-instagram"></span></p>
+          <p class="muted">Payment: <span id="biz-payment"></span></p>
+          <p class="muted">Website: <span id="biz-website"></span></p>
+        </article>
+        <article class="panel">
+          <p class="muted">Lead pipeline</p>
+          <table class="table">
+            <tbody id="lead-status-body"></tbody>
+          </table>
+        </article>
+      </section>
+
+      <section class="panel">
+        <p class="muted">Nina leads</p>
+        <div id="leads-wrap"></div>
+      </section>
+
+      <section class="panel">
+        <p class="muted">Wholesale enquiries</p>
+        <div id="orders-wrap"></div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector("#signin-form");
+    const message = document.querySelector("#message");
+    const dashboard = document.querySelector("#dashboard");
+
+    function showMessage(text, ok) {
+      message.style.display = "block";
+      message.style.borderColor = ok ? "rgba(63,209,122,.5)" : "rgba(255,120,120,.45)";
+      message.innerHTML = `<strong>${ok ? "Ready" : "Could not load dashboard"}</strong><p class="muted">${text}</p>`;
+    }
+
+    function renderTable(columns, rows) {
+      if (!rows.length) {
+        return '<div class="empty">No records yet.</div>';
+      }
+      const head = columns.map((column) => `<th>${column.label}</th>`).join("");
+      const body = rows.map((row) => {
+        return `<tr>${columns.map((column) => `<td>${column.render(row)}</td>`).join("")}</tr>`;
+      }).join("");
+      return `<table class="table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+    }
+
+    function fillDashboard(data) {
+      dashboard.style.display = "grid";
+      const business = data.business || {};
+      const summary = data.summary || {};
+      const counts = data.lead_status_counts || {};
+
+      document.querySelector("#stat-leads").textContent = summary.total_leads || 0;
+      document.querySelector("#stat-orders").textContent = summary.total_orders || 0;
+      document.querySelector("#stat-new").textContent = summary.new_leads || 0;
+      document.querySelector("#stat-converted").textContent = summary.converted_leads || 0;
+
+      document.querySelector("#biz-name").textContent = business.business_name || "Business";
+      document.querySelector("#biz-email").textContent = business.email || "";
+      document.querySelector("#biz-plan").textContent = business.plan || "starter";
+      document.querySelector("#biz-tenant").textContent = business.tenant_slug || "-";
+      document.querySelector("#biz-shopify").textContent = business.shopify_status || "not connected";
+      document.querySelector("#biz-instagram").textContent = business.instagram_status || "pending";
+      document.querySelector("#biz-payment").textContent = business.payment_status || "trial";
+      document.querySelector("#biz-website").textContent = business.website || "not set";
+
+      document.querySelector("#lead-status-body").innerHTML = `
+        <tr><td>New</td><td>${counts.new || 0}</td></tr>
+        <tr><td>Contacted</td><td>${counts.contacted || 0}</td></tr>
+        <tr><td>Converted</td><td>${counts.converted || 0}</td></tr>
+        <tr><td>Closed</td><td>${counts.closed || 0}</td></tr>
+      `;
+
+      document.querySelector("#leads-wrap").innerHTML = renderTable(
+        [
+          { label: "Created", render: (row) => row.created_at || "-" },
+          { label: "Buyer", render: (row) => row.buyer_name || row.buyer_email || "-" },
+          { label: "Type", render: (row) => row.buyer_type || "-" },
+          { label: "Status", render: (row) => `<span class="chip ${row.status === "new" ? "warn" : ""}">${row.status || "new"}</span>` },
+          { label: "Message", render: (row) => row.message || "-" }
+        ],
+        data.leads || []
+      );
+
+      document.querySelector("#orders-wrap").innerHTML = renderTable(
+        [
+          { label: "Order no", render: (row) => row.wholesale_order_no || "-" },
+          { label: "Buyer", render: (row) => row.name || "-" },
+          { label: "Category", render: (row) => row.product_category || "-" },
+          { label: "Pieces", render: (row) => row.pieces_required || "-" },
+          { label: "City", render: (row) => row.delivery_city || "-" }
+        ],
+        data.orders || []
+      );
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const payload = Object.fromEntries(new FormData(form).entries());
+      const response = await fetch("/api/business/dashboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        dashboard.style.display = "none";
+        showMessage(data.error || "Could not load dashboard.", false);
+        return;
+      }
+      showMessage("Dashboard loaded for " + (data.business.business_name || "your business") + ".", true);
+      fillDashboard(data);
+    });
+  </script>
+</body>
+</html>"""
+
+
 class NiharikaWholesaleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_url = urlparse(self.path)
@@ -2359,6 +2618,10 @@ class NiharikaWholesaleHandler(BaseHTTPRequestHandler):
             self.send_html(CUSTOMER_LOGIN_HTML)
             return
 
+        if path == "/business":
+            self.send_html(BUSINESS_DASHBOARD_HTML)
+            return
+
         if path == "/survey-responses.csv":
             token = (query.get("token") or [""])[0]
             if token != NIHARIKA_ADMIN_TOKEN:
@@ -2411,6 +2674,14 @@ class NiharikaWholesaleHandler(BaseHTTPRequestHandler):
                     "payment_instruction": payment_instruction_for_business(),
                 }
             )
+            return
+
+        if path == "/api/business/dashboard":
+            dashboard, error = get_business_dashboard(payload)
+            if error:
+                self.send_json({"error": error}, 401)
+                return
+            self.send_json(dashboard)
             return
 
         if path == "/api/shopify/connect":

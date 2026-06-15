@@ -1,0 +1,21 @@
+{
+  "sivashankarimurugesan@niharika.com": {
+    "business_name": "Niharika Demo Boutique",
+    "email": "sivashankarimurugesan@niharika.com",
+    "tenant_slug": "niharika-demo-boutique",
+    "password_salt": "25ec0095a34f69a79c2243b1378b792a",
+    "password_hash": "d77c6b354dddb30c9f7af04be2900b4993b6d366e4bfed99109b6630deaca507",
+    "instagram_handle": "niharika_kurtis",
+    "website": "https://www.niharika.com",
+    "shopify_store_domain": "",
+    "shopify_status": "not_connected",
+    "payment_status": "trial",
+    "instagram_status": "pending",
+    "plan": "starter_trial",
+    "price_inr": 500,
+    "license_key": "PW-ZRXHBBOYD7P3SOIUZUY3QK",
+    "license_hash": "db978d5c9cf21ec26cecf4137eda1c5b88fe55fa4380d853106ce905d828b8fc",
+    "created_at": "2026-06-15T10:45:02.6942457+05:30",
+    "updated_at": "2026-06-15T10:45:02.6942457+05:30"
+  }
+}

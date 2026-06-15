@@ -696,7 +696,7 @@
 
     <div class="content">
       <header class="topbar">
-        <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
+        <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
         <a class="button secondary" href="/survey">Wholesale Survey</a>
         <a class="button" href="/admin">Niharika Admin</a>
       </header>
@@ -711,6 +711,7 @@
           </p>
           <div class="actions">
             <a class="button" href="https://www.niharika.com/">Share Customer Link</a>
+            <a class="button" href="/dist/niharika-customer-app.zip" download>Download For Windows</a>
             <a class="button secondary" href="/customer-login">Customer Google Login</a>
             <a class="button secondary" href="/survey">Wholesale Survey</a>
             <a class="button secondary" href="/signup">Business Access</a>
@@ -729,7 +730,7 @@
               </p>
               <div class="actions">
                 <a class="button" href="https://wa.me/918149869054" target="_blank" rel="noopener">WhatsApp Business</a>
-                <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
+                <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
               </div>
             </div>
             <div class="nina-chat" aria-label="Chat with Nina">
@@ -766,7 +767,8 @@
             <p>Customers can browse available pieces, choose an item, and send the requirement directly to Nina.</p>
           </div>
           <div class="catalog-tools" aria-label="Catalogue filters">
-            <a class="button secondary" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">Instagram Inbox</a>
+            <a class="button" href="/dist/niharika-customer-app.zip" download>Windows App Download</a>
+            <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
           </div>
           <div id="catalog-grid" class="catalog-grid" aria-live="polite"></div>
         </section>
@@ -774,7 +776,7 @@
 
       <footer>
         <span>Niharika Wholesale with Nina chatbot</span>
-        <span>Instagram inbox and WhatsApp: 8149869054</span>
+        <span>Instagram: @niharika_kurtis and WhatsApp: 8149869054</span>
       </footer>
     </div>
   </div>
@@ -819,7 +821,7 @@
               <p>${item.price_note || ""}</p>
               <div class="actions">
                 <button class="button choose-catalog" type="button" data-id="${item.id}">Choose</button>
-                <a class="button secondary" href="${item.instagram_url || "https://www.instagram.com/direct/inbox/"}" target="_blank" rel="noopener">Instagram Inbox</a>
+                <a class="button secondary" href="${item.instagram_url || "https://www.instagram.com/niharika_kurtis/"}" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
               </div>
             </div>
           </article>
@@ -872,7 +874,7 @@
         const data = await response.json();
         addNinaMessage(`${data.reply} ${data.next_question || ""}`.trim(), "");
       } catch (error) {
-        addNinaMessage("Nina is not reachable right now. Please use WhatsApp 8149869054 or Instagram inbox.", "");
+        addNinaMessage("Nina is not reachable right now. Please use WhatsApp 8149869054 or Instagram @niharika_kurtis.", "");
       }
     });
 

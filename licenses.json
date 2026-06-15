@@ -1,1 +1,14 @@
-{}
+{
+  "db978d5c9cf21ec26cecf4137eda1c5b88fe55fa4380d853106ce905d828b8fc": {
+    "customer": "Niharika Demo Boutique",
+    "plan": "starter",
+    "status": "active",
+    "expires_at": "2026-12-31",
+    "features": [
+      "license.verify",
+      "recommend.rank",
+      "mentor.match"
+    ],
+    "license_hash": "db978d5c9cf21ec26cecf4137eda1c5b88fe55fa4380d853106ce905d828b8fc"
+  }
+}

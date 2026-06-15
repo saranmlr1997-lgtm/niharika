@@ -6,7 +6,7 @@ from urllib.parse import unquote
 from flask import Flask, Response, jsonify, request, send_file
 
 from saas_store import SaaSStore
-from app import ADMIN_HTML, COURSERA_BLOG_FEED, CUSTOMER_LOGIN_HTML, EDTECH_APIS, NIHARIKA_ADMIN_TOKEN, NIHARIKA_INSTAGRAM_URL
+from app import ADMIN_HTML, BUSINESS_DASHBOARD_HTML, COURSERA_BLOG_FEED, CUSTOMER_LOGIN_HTML, EDTECH_APIS, NIHARIKA_ADMIN_TOKEN, NIHARIKA_INSTAGRAM_URL
 from app import (
     SIGNUP_HTML,
     SITE_NAME,
@@ -21,6 +21,7 @@ from app import (
     extract_license_key,
     free_retail_wholesale_rank,
     free_requirement_payload,
+    get_business_dashboard,
     get_business_by_license_key,
     get_coursera_posts,
     get_license_record,
@@ -117,6 +118,11 @@ def survey_page():
 @app.route("/customer-login", methods=["GET"])
 def customer_login_page():
     return Response(CUSTOMER_LOGIN_HTML, mimetype="text/html")
+
+
+@app.route("/business", methods=["GET"])
+def business_dashboard_page():
+    return Response(BUSINESS_DASHBOARD_HTML, mimetype="text/html")
 
 
 @app.route("/robots.txt", methods=["GET"])
@@ -255,6 +261,14 @@ def business_signin():
             "payment_instruction": payment_instruction_for_business(),
         }
     )
+
+
+@app.route("/api/business/dashboard", methods=["POST"])
+def business_dashboard():
+    dashboard, error = get_business_dashboard(payload())
+    if error:
+        return jsonify({"error": error}), 401
+    return jsonify(dashboard)
 
 
 @app.route("/api/shopify/connect", methods=["POST"])

@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Niharika | Wholesale Discovery With Nina</title>
+  <meta name="description" content="Niharika helps wholesale buyers share requirements with Nina, compare options, and reach the right buying next step.">
+  <link rel="canonical" href="https://www.niharika.com/">
+  <meta property="og:title" content="Niharika">
+  <meta property="og:description" content="Wholesale discovery powered by Nina for Niharika buyers.">
+  <meta property="og:url" content="https://www.niharika.com/">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #fff8ef;
+      --muted: #cfc4b2;
+      --soft: #f3e5cf;
+      --line: rgba(255, 255, 255, 0.12);
+      --panel: #15130f;
+      --panel-2: #241d18;
+      --bg: #090705;
+      --green: #f0bf55;
+      --copper: #c68a35;
+      --blue: #0f695f;
+      --berry: #c01668;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 238px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 18px;
+      border-right: 1px solid var(--line);
+      background: #050403;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: block;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      object-fit: cover;
+    }
+
+    .brand-name {
+      font-family: "Brush Script MT", "Lucida Handwriting", "Segoe Script", cursive;
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+
+    .brand-initial {
+      font-size: 1.28em;
+      line-height: 0;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+      margin-top: 34px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    nav a {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 8px;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .side-card {
+      margin-top: 34px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .side-card strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .side-card span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .content {
+      min-width: 0;
+      background:
+        linear-gradient(rgba(9, 7, 5, 0.34), rgba(9, 7, 5, 0.96) 510px),
+        url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=82") center top/cover no-repeat,
+        var(--bg);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 18px clamp(18px, 4vw, 44px);
+      background: rgba(9, 7, 5, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(18px);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--green);
+      color: #160d05;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .button.secondary {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+    }
+
+    .hero {
+      padding: clamp(34px, 7vw, 76px) clamp(18px, 4vw, 44px) 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--soft);
+      font-weight: 850;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--green);
+    }
+
+    h1 {
+      max-width: 960px;
+      margin: 16px 0 0;
+      font-size: clamp(3rem, 9vw, 7.1rem);
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 690px;
+      margin: 22px 0 0;
+      color: var(--soft);
+      font-size: clamp(1rem, 2vw, 1.22rem);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .section {
+      padding: 18px clamp(18px, 4vw, 44px) 34px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 3vw, 2.2rem);
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 570px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .shelf {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pick-card {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .pick-card:hover {
+      transform: translateY(-3px);
+      background: var(--panel-2);
+    }
+
+    .catalog-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .catalog-filter {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .catalog-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .catalog-photo {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(15, 105, 95, 0.92), rgba(192, 22, 104, 0.78));
+      color: #fff8ef;
+      font-size: clamp(1.5rem, 4vw, 2.6rem);
+      font-weight: 950;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .catalog-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .catalog-body {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .catalog-body h3 {
+      margin: 0;
+      font-size: 1.18rem;
+    }
+
+    .catalog-body p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .catalog-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .catalog-meta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--soft);
+      font-size: 0.82rem;
+      font-weight: 850;
+    }
+
+    .film-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.7fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .film-frame {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #030504;
+      aspect-ratio: 16 / 9;
+    }
+
+    .film-frame video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background:
+        linear-gradient(135deg, rgba(15, 105, 95, 0.26), rgba(192, 22, 104, 0.16)),
+        #070503;
+    }
+
+    .film-note {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .film-note p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .short-film-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .short-film-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      aspect-ratio: 4 / 5;
+    }
+
+    .short-film-card img,
+    .short-film-card video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #030201;
+    }
+
+    .loom-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .loom-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      aspect-ratio: 4 / 5;
+    }
+
+    .loom-card img,
+    .loom-card video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #030201;
+    }
+
+    .loom-empty {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+    }
+
+    .cover {
+      min-height: 154px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(15, 105, 95, 0.94), rgba(240, 191, 85, 0.78));
+    }
+
+    .cover.copper { background: linear-gradient(135deg, rgba(198, 138, 53, 0.96), rgba(15, 105, 95, 0.6)); }
+    .cover.berry { background: linear-gradient(135deg, rgba(192, 22, 104, 0.96), rgba(240, 191, 85, 0.62)); }
+    .cover.dark { background: linear-gradient(135deg, rgba(255, 248, 239, 0.18), rgba(15, 105, 95, 0.6)); }
+
+    .score {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: rgba(6, 17, 9, 0.82);
+      color: white;
+      font-weight: 900;
+    }
+
+    .pick-body {
+      padding: 16px;
+    }
+
+    .pick-body h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+
+    .pick-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .business {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .panel {
+      padding: clamp(20px, 4vw, 34px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(21, 25, 23, 0.92);
+    }
+
+    .panel h2 {
+      max-width: 780px;
+      font-size: clamp(1.7rem, 4vw, 3.45rem);
+      line-height: 1;
+    }
+
+    .panel p {
+      max-width: 690px;
+      color: var(--muted);
+    }
+
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .price strong {
+      font-size: clamp(2.5rem, 6vw, 4.8rem);
+      line-height: 1;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--line);
+    }
+
+    .metric {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1.55rem;
+    }
+
+    .nina-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .82fr) minmax(340px, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .nina-chat {
+      display: grid;
+      grid-template-rows: auto minmax(260px, 1fr) auto;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(21, 25, 23, .94);
+    }
+
+    .nina-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nina-head strong { display: block; }
+    .nina-head span { color: var(--muted); font-size: .9rem; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(240, 191, 85, .16);
+      color: var(--green);
+      font-size: .82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .nina-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .nina-message {
+      max-width: 86%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .07);
+      color: var(--soft);
+    }
+
+    .nina-message.user {
+      align-self: flex-end;
+      background: rgba(240, 191, 85, .16);
+      color: var(--ink);
+    }
+
+    .nina-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .nina-form select,
+    .nina-form input {
+      min-height: 44px;
+      width: 100%;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f1210;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 28px clamp(18px, 4vw, 44px);
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+      }
+      nav {
+        display: flex;
+        gap: 4px;
+        margin-top: 0;
+        overflow-x: auto;
+      }
+      .side-card { display: none; }
+      .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .film-wrap { grid-template-columns: 1fr; }
+      .business { grid-template-columns: 1fr; }
+      .nina-grid { grid-template-columns: 1fr; }
+      .loom-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .short-film-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 650px) {
+      .sidebar,
+      .topbar,
+      footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .topbar { position: static; }
+      .shelf,
+      .catalog-grid,
+      .loom-grid,
+      .short-film-grid,
+      .film-wrap,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+      nav { width: 100%; }
+      .pick-card { min-height: 260px; }
+      .nina-form { grid-template-columns: 1fr; }
+      .nina-message { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="https://www.niharika.com/">
+        <img class="mark" src="/media/niharika-brand-logo.jpg" alt="Niharika logo">
+        <span class="brand-name"><span class="brand-initial">N</span>iharika</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a class="active" href="https://www.niharika.com/">Home</a>
+        <a href="/survey">Wholesale Survey</a>
+        <a href="/customer-login">Customer Login</a>
+        <a href="/admin">Admin</a>
+      </nav>
+      <div class="side-card">
+        <strong>Nina wholesale assistant</strong>
+        <span>Buyer requirement discovery for Niharika wholesale enquiries.</span>
+      </div>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
+        <a class="button secondary" href="/survey">Wholesale Survey</a>
+        <a class="button" href="/admin">Niharika Admin</a>
+      </header>
+
+      <main>
+        <section class="hero">
+          <span class="eyebrow">Niharika wholesale discovery with Nina</span>
+          <h1>Let Nina understand the buyer before Niharika quotes.</h1>
+          <p>
+            Niharika is now a wholesale business tool powered by Nina. Nina talks to buyers,
+            captures product needs, quantity, budget, delivery city, and routes qualified enquiries.
+          </p>
+          <div class="actions">
+            <a class="button" href="https://www.niharika.com/">Share Customer Link</a>
+            <a class="button secondary" href="/customer-login">Customer Google Login</a>
+            <a class="button secondary" href="/survey">Wholesale Survey</a>
+            <a class="button secondary" href="/signup">Business Access</a>
+            <a class="button secondary" href="https://niharika.com/" target="_blank" rel="noopener">Wholesale Products</a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="nina-title">
+          <div class="nina-grid">
+            <div class="panel">
+              <span class="eyebrow">Talk with Nina</span>
+              <h2 id="nina-title">Nina collects wholesale requirements before sales follow-up.</h2>
+              <p>
+                Buyers can explain what they need in plain language. Nina turns that into requirement signals
+                so Niharika can respond with the right product, quantity, quote, and next step.
+              </p>
+              <div class="actions">
+                <a class="button" href="https://wa.me/918149869054" target="_blank" rel="noopener">WhatsApp Business</a>
+                <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
+              </div>
+            </div>
+            <div class="nina-chat" aria-label="Chat with Nina">
+              <div class="nina-head">
+                <div>
+                  <strong>Nina</strong>
+                  <span>Niharika wholesale assistant</span>
+                </div>
+                <span class="status-pill">Requirement mode</span>
+              </div>
+              <div id="nina-messages" class="nina-messages">
+                <div class="nina-message">Hi, I am Nina for Niharika. Tell me what product you need, quantity, budget, and delivery city.</div>
+              </div>
+              <form id="nina-form" class="nina-form">
+                <select id="buyer-type" aria-label="Buyer type">
+                  <option value="wholesale buyer">Wholesale</option>
+                  <option value="reseller">Reseller</option>
+                  <option value="shop owner">Shop Owner</option>
+                  <option value="boutique">Boutique</option>
+                </select>
+                <input id="buyer-name" autocomplete="name" placeholder="Your name">
+                <input id="buyer-email" autocomplete="email" type="email" placeholder="Email for quote">
+                <input id="buyer-phone" autocomplete="tel" placeholder="Phone or WhatsApp">
+                <input id="nina-input" autocomplete="off" placeholder="Example: Need 100 pieces, premium quality, delivery to Bangalore" required>
+                <button class="button" type="submit">Ask Nina</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="catalog-title">
+          <div class="section-head">
+            <h2 id="catalog-title">Niharika Catalogue Pieces</h2>
+            <p>Customers can browse available pieces, choose an item, and send the requirement directly to Nina.</p>
+          </div>
+          <div class="catalog-tools" aria-label="Catalogue filters">
+            <a class="button secondary" href="https://www.instagram.com/niharika_kurtis/" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
+          </div>
+          <div id="catalog-grid" class="catalog-grid" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <footer>
+        <span>Niharika Wholesale with Nina chatbot</span>
+        <span>Instagram: @niharika_kurtis and WhatsApp: 8149869054</span>
+      </footer>
+    </div>
+  </div>
+  <script>
+    const ninaForm = document.querySelector("#nina-form");
+    const ninaInput = document.querySelector("#nina-input");
+    const buyerType = document.querySelector("#buyer-type");
+    const buyerName = document.querySelector("#buyer-name");
+    const buyerEmail = document.querySelector("#buyer-email");
+    const buyerPhone = document.querySelector("#buyer-phone");
+    const ninaMessages = document.querySelector("#nina-messages");
+    const catalogGrid = document.querySelector("#catalog-grid");
+    let catalogItems = [];
+
+    function addNinaMessage(text, role) {
+      const bubble = document.createElement("div");
+      bubble.className = `nina-message ${role || ""}`.trim();
+      bubble.textContent = text;
+      ninaMessages.appendChild(bubble);
+      ninaMessages.scrollTop = ninaMessages.scrollHeight;
+    }
+
+    function fallbackLabel(item) {
+      return (item.category || "Niharika").split(" ").map((part) => part[0]).join("").slice(0, 3).toUpperCase();
+    }
+
+    function renderCatalog() {
+      catalogGrid.innerHTML = catalogItems.map((item) => {
+        const image = item.image_url
+          ? `<img src="${item.image_url}" alt="${item.name}">`
+          : `<span>${fallbackLabel(item)}</span>`;
+        return `
+          <article class="catalog-card">
+            <div class="catalog-photo">${image}</div>
+            <div class="catalog-body">
+              <div class="catalog-meta">
+                <span>${item.category || "Catalogue"}</span>
+                <span>${item.minimum_quantity || "Wholesale"}</span>
+              </div>
+              <h3>${item.name}</h3>
+              <p>${item.description || ""}</p>
+              <p>${item.price_note || ""}</p>
+              <div class="actions">
+                <button class="button choose-catalog" type="button" data-id="${item.id}">Choose</button>
+                <a class="button secondary" href="${item.instagram_url || "https://www.instagram.com/niharika_kurtis/"}" target="_blank" rel="noopener">Instagram @niharika_kurtis</a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadCatalog() {
+      try {
+        const response = await fetch("/api/catalog");
+        const data = await response.json();
+        catalogItems = data.items || [];
+        renderCatalog();
+      } catch (error) {
+        catalogGrid.innerHTML = `<article class="catalog-card"><div class="catalog-body"><h3>Catalogue loading</h3><p>Please message Nina with the product category and quantity.</p></div></article>`;
+      }
+    }
+
+    catalogGrid.addEventListener("click", (event) => {
+      const button = event.target.closest(".choose-catalog");
+      if (!button) return;
+      const item = catalogItems.find((entry) => entry.id === button.dataset.id);
+      if (!item) return;
+      ninaInput.value = `I am interested in ${item.name} (${item.category}). Please share wholesale quote details.`;
+      ninaInput.focus();
+      addNinaMessage(`Selected ${item.name}. Please add quantity, budget, and delivery city.`, "");
+      document.querySelector("#nina-title").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    ninaForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const message = ninaInput.value.trim();
+      if (!message) return;
+
+      addNinaMessage(message, "user");
+      ninaInput.value = "";
+
+      try {
+        const response = await fetch("/api/nina/requirements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message,
+            buyer_type: buyerType.value,
+            buyer_name: buyerName.value,
+            buyer_email: buyerEmail.value,
+            buyer_phone: buyerPhone.value
+          })
+        });
+        const data = await response.json();
+        addNinaMessage(`${data.reply} ${data.next_question || ""}`.trim(), "");
+      } catch (error) {
+        addNinaMessage("Nina is not reachable right now. Please use WhatsApp 8149869054 or Instagram @niharika_kurtis.", "");
+      }
+    });
+
+    loadCatalog();
+  </script>
+</body>
+</html>

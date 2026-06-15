@@ -1,0 +1,20 @@
+[
+  {
+    "id": "survey_ea89c15eb6ae66a7",
+    "created_at": "2026-06-15T05:08:59.032304+00:00",
+    "wholesale_order_no": "WHO-1002",
+    "name": "Anita",
+    "email": "sivashankarimurugesan@niharika.com",
+    "phone": "9876543210",
+    "business_name": "Niharika Demo Boutique",
+    "instagram_handle": "niharika_kurtis",
+    "buyer_type": "boutique",
+    "product_category": "Sarees",
+    "pieces_required": "50",
+    "budget": "25000",
+    "delivery_city": "Chennai",
+    "timeline": "This week",
+    "requirements": "Need festive saree styles for boutique launch",
+    "source": "niharika-survey"
+  }
+]
